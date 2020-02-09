@@ -34,6 +34,8 @@
     <string name="quality_4">Sleep Quality 4</string>
     <string name="quality_5">Sleep Quality 5</string>
 
+
+<!--  CDATA stands for character data. CDATA means that the data in between these strings includes data that could be interpreted as XML markup, but should not be.  -->
     <!-- Output to TextView styled with a little HTML -->
     <string name="title"><![CDATA[<h3>HERE IS YOUR SLEEP DATA</h3>]]></string>
     <string name="start_time"><![CDATA[<b>Start:</b>]]></string>
