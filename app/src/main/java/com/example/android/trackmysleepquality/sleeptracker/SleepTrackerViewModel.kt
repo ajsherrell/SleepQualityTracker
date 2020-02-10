@@ -18,6 +18,7 @@ package com.example.android.trackmysleepquality.sleeptracker
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.android.trackmysleepquality.database.SleepDatabaseDao
@@ -34,6 +35,12 @@ class SleepTrackerViewModel(
 
     //Job allows you to cancel all coroutines started by this view model when the view model is no longer used and is destroyed. This way, you don't end up with coroutines that have nowhere to return to.
     private var viewModelJob = Job()
+
+    //create a LiveData that changes when you want the app to navigate to the SleepQualityFragment. Use encapsulation to only expose a gettable version of the LiveData to the ViewModel.
+    private val _navigateToSleepQuality = MutableLiveData<SleepNight>()
+
+    val navigateToSleepQuality: LiveData<SleepNight>
+        get() = _navigateToSleepQuality
 
     /**
      * The scope determines what thread the coroutine will run on, and the scope also needs to know about the job. To get a scope, ask for an instance of CoroutineScope, and pass in a dispatcher and a job.
@@ -96,6 +103,9 @@ class SleepTrackerViewModel(
             val oldNight = tonight.value ?: return@launch //In Kotlin, the return@label syntax specifies the function from which this statement returns, among several nested functions.
             oldNight.endTimeMilli = System.currentTimeMillis()
             update(oldNight)
+
+            //Note that this variable is set to the night. When this variable has a value, the app navigates to the SleepQualityFragment, passing along the night.
+            _navigateToSleepQuality.value = oldNight
         }
     }
 
@@ -118,6 +128,10 @@ class SleepTrackerViewModel(
         }
     }
 
+    //when the user taps the Stop button, the app navigates to the SleepQualityFragment to collect a quality rating.
+    fun doneNavigating() { //function that resets the variable that triggers navigation.
+        _navigateToSleepQuality.value = null
+    }
 
     override fun onCleared() { //cancel all coroutines.
         super.onCleared()

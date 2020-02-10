@@ -22,10 +22,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabase
-import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 import com.example.android.trackmysleepquality.databinding.FragmentSleepTrackerBinding
 
 /**
@@ -62,10 +63,20 @@ class SleepTrackerFragment : Fragment() {
                 .get(SleepTrackerViewModel::class.java)
         binding.sleepTrackerViewModel = sleepTrackerViewModel
 
+        //The SleepTrackerFragment needs to observe _navigateToSleepQuality so that the app knows when to navigate.
+        sleepTrackerViewModel.navigateToSleepQuality.observe(this, Observer { night ->
+            night?.let {
+                this.findNavController().navigate(
+                        SleepTrackerFragmentDirections
+                                .actionSleepTrackerFragmentToSleepQualityFragment(night.nightId))
+                sleepTrackerViewModel.doneNavigating()
+            }
+        })
 
         //Set the current activity as the lifecycle owner of the binding
         binding.setLifecycleOwner(this)
 
         return binding.root
     }
+
 }

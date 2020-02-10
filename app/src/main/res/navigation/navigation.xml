@@ -40,6 +40,7 @@
         android:name="com.example.android.trackmysleepquality.sleepquality.SleepQualityFragment"
         android:label="@string/sleep_quality_fragment"
         tools:layout="@layout/fragment_sleep_quality">
+<!--   When the user goes from the SleepTrackerFragment to the SleepQualityFragment, the app will pass a sleepNightKey to the SleepQualityFragment for the night that needs to be updated.     -->
         <argument
             android:name="sleepNightKey"
             app:argType="long" />
