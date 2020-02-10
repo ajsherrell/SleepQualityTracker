@@ -72,6 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
             android:onClick="@{() -> sleepTrackerViewModel.onStartTracking()}"
+            android:enabled="@{sleepTrackerViewModel.startButtonVisible}"
             android:text="@string/start"
             app:layout_constraintBaseline_toBaselineOf="@id/stop_button"
             app:layout_constraintEnd_toStartOf="@+id/stop_button"
@@ -86,6 +87,7 @@
             android:layout_marginTop="@dimen/margin"
             android:layout_marginEnd="@dimen/margin"
             android:onClick="@{() -> sleepTrackerViewModel.onStopTracking()}"
+            android:enabled="@{sleepTrackerViewModel.stopButtonVisible}"
             android:text="@string/stop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/start_button"
@@ -100,6 +102,7 @@
             android:layout_marginEnd="@dimen/margin"
             android:layout_marginBottom="@dimen/margin"
             android:onClick="@{() -> sleepTrackerViewModel.onClear()}"
+            android:enabled="@{sleepTrackerViewModel.clearButtonVisible}"
             android:text="@string/clear"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -107,3 +110,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+
+<!--Tip: Setting the appearance of a disabled View
+The enabled attribute is not the same as the visibility attribute. The enabled attribute only determines whether the View is enabled, not whether the View is visible.
+
+The meaning of "enabled" varies by the subclass. A user can edit the text in an enabled EditText, but not in a disabled EditText. A user can tap an enabled Button, but can't tap a disabled one.
+
+A default style is applied to a disabled View to visually represent that the View is not active.
+
+However, if the View has a background attribute or a textColor attribute, the values of those attributes are used when the View is displayed, even if the View is disabled.
+
+To define which colors to use for enabled and disabled states, use a ColorStateList for the text color and a StateListDrawable for the background color.-->

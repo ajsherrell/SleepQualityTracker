@@ -50,5 +50,37 @@ You can insert a SleepNight into the database.
 You can get back the SleepNight.
 The SleepNight has the correct value for the quality.
 
+#### Summary
+-  Implementing sleep quality tracking in this app is like playing a familiar piece of music in a new key. While details change, the underlying pattern of what you did in previous codelabs in this lesson remains the same. Being aware of these patterns makes coding much faster, because you can reuse code from existing apps. Here are some of the patterns used in this course so far:
+
+Create a ViewModel and a ViewModelFactory and set up a data source.
+Trigger navigation. To separate concerns, put the click handler in the view model and the navigation in the fragment.
+Use encapsulation with LiveData to track and respond to state changes.
+Use transformations with LiveData.
+Create a singleton database.
+Set up coroutines for database operations.
+
+- Triggering navigation:
+
+You define possible navigation paths between fragments in a navigation file. There are some different ways to trigger navigation from one fragment to the next. These include:
+
+Define onClick handlers to trigger navigation to a destination fragment.
+Alternatively, to enable navigation from one fragment to the next:
+Define a LiveData value to record if navigation should occur.
+Attach an observer to that LiveData value.
+Your code then changes that value whenever navigation needs to be triggered or is complete.
+
+- Setting the android:enabled attribute:
+
+The android:enabled attribute is defined in TextView and inherited by all subclasses, including Button.
+The android:enabled attribute determines whether or not a View is enabled. The meaning of "enabled" varies by subclass. For example, a non-enabled EditText prevents the user from editing the contained text, and a non-enabled Button prevents the user from tapping the button.
+The enabled attribute is not the same as the visibility attribute.
+You can use transformation maps to set the value of the enabled attribute of buttons based on the state of another object or variable.
+
+- Other points covered in this codelab:
+
+To trigger notifications to the user, you can use the same technique as you use to trigger navigation.
+You can use a Snackbar to notify the user.
+
 
 

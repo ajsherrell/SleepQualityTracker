@@ -42,6 +42,12 @@ class SleepTrackerViewModel(
     val navigateToSleepQuality: LiveData<SleepNight>
         get() = _navigateToSleepQuality
 
+    //Showing the snackbar is a UI task, and it should happen in the fragment. Deciding to show the snackbar happens in the ViewModel. To set up and trigger a snackbar when the data is cleared, you can use the same technique as for triggering navigation.
+    private var _showSnackbarEvent = MutableLiveData<Boolean>()
+
+    val showSnackBarEvent: LiveData<Boolean>
+        get() = _showSnackbarEvent
+
     /**
      * The scope determines what thread the coroutine will run on, and the scope also needs to know about the job. To get a scope, ask for an instance of CoroutineScope, and pass in a dispatcher and a job.
     Using Dispatchers.Main means that coroutines launched in the uiScope will run on the main thread. This is sensible for many coroutines started by a ViewModel, because after these coroutines perform some processing, they result in an update of the UI.
@@ -56,6 +62,21 @@ class SleepTrackerViewModel(
     }
 
     private var tonight = MutableLiveData<SleepNight?>() //holds the current night.
+
+    //start button should be enabled when tonight is null
+    val startButtonVisible = Transformations.map(tonight) {
+        it == null
+    }
+
+    //stop button should be enable when tonight is not null
+    val stopButtonVisible = Transformations.map(tonight) {
+        it != null
+    }
+
+    //clear button should only be enable if nights, and thus the database, contains sleep nights.
+    val clearButtonVisible = Transformations.map(nights) {
+        it?.isNotEmpty()
+    }
 
     init {
         initializeTonight()
@@ -119,6 +140,7 @@ class SleepTrackerViewModel(
         uiScope.launch {
             clear()
             tonight.value = null
+            _showSnackbarEvent.value = true
         }
     }
 
@@ -131,6 +153,11 @@ class SleepTrackerViewModel(
     //when the user taps the Stop button, the app navigates to the SleepQualityFragment to collect a quality rating.
     fun doneNavigating() { //function that resets the variable that triggers navigation.
         _navigateToSleepQuality.value = null
+    }
+
+    //snackbar
+    fun doneShowingSnackbar() {
+        _showSnackbarEvent.value = false
     }
 
     override fun onCleared() { //cancel all coroutines.
